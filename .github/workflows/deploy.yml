@@ -1,9 +1,9 @@
 name: Deploy
 on:
   push:
-    branches: main
+    branches: [main]
   pull_request:
-    branches: main
+    branches: [main]
 
 jobs:
   deploy:
@@ -28,14 +28,12 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Install step
-        run: "deno install"
+      - name: Install dependencies
+        run: deno cache src/server.ts
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "api-ayushrameja"
-          entrypoint: "/"
-          root: ""
-          
-          
+          entrypoint: "src/server.ts"
+          root: "."
